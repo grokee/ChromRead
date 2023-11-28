@@ -4,14 +4,34 @@ import org.knowm.xchart.XYChart;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ForTest extends JPanel {
 
+    public String getExtenction(String path){
+        String extenction = "";
+//        Pattern pattern = Pattern.compile(".*\\.([a-zA-Z]+)$");
+//        Matcher matcher = pattern.matcher(path);
+        Pattern stringPattern = Pattern.compile(".*:\\s([0-9.]+).*");
+        Matcher m = stringPattern.matcher(path);
+        if (m.find()){
+
+        extenction = m.group(1);}
+
+        return extenction;
+    }
+
 
     public static void main(String[] args) {
-        String abc = "kolo, circle,square";
-        String[] a = abc.split(",");
-        System.out.println(a[2]);
+        String abc = "{\"datarate\": 5, \"data\": [[0.042, 0.054, 0.06, 0.058, 0.058, 0.057, 0.051, 0.046, 0.044, 0.041, 0.035, 0.03, 0.025, ";
+//        String[] a = abc.split(",");
+//        System.out.println(a[2]);
+
+
+        ForTest ft = new ForTest();
+        String ext = ft.getExtenction(abc);
+        System.out.println(ext);
 
     }
 

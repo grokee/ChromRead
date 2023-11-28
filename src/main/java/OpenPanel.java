@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.*;
 
 public class OpenPanel extends JPanel {
 
@@ -20,13 +21,10 @@ public class OpenPanel extends JPanel {
         return yAxis;
     }
 
+
     private JComboBox yAxis;
 
-    public String[] getList() {
-        return list;
-    }
-
-    private String[] list = {"first", "second", "third"};
+    private ArrayList<String> list = new ArrayList<>();
 
     public JLabel getFileNameLabel() {
         return fileNameLabel;
@@ -40,6 +38,8 @@ public class OpenPanel extends JPanel {
 
     private File selectedFile;
 
+    private Map<Color,String> checkedString;
+
     public OpenPanel() {
 
         this.setBackground(Color.LIGHT_GRAY);
@@ -47,15 +47,19 @@ public class OpenPanel extends JPanel {
 
         this.setLayout(new BorderLayout());
 
+        JsonExtractor json = new JsonExtractor();
+//        String[] arrayList = new String[json.getStringList().length()];
+//        arrayList = json.getStringArrayList();
+
         JButton dataOriginBtn = new JButton("Data origin");
         fileNameLabel = new JLabel();
         fileNameLabel.setVisible(true);
         JLabel xLabel = new JLabel("Choose array for x-axis");
-        xAxis = new JComboBox(list);
+        xAxis = new JComboBox();
         xAxis.setSize(100, 10);
         JLabel xData = new JLabel("fflfkjflfjfljflkfjflkfjlkfj");
         JLabel yLabel = new JLabel("Choose array for y-axis");
-        yAxis = new JComboBox(list);
+        yAxis = new JComboBox();
         yAxis.setSize(100, 10);
         JLabel yData = new JLabel("flkjflkjflfkjflkfjlkf");
         Checkbox normalizationChoose = new Checkbox("Normalize x-axis to zero");
@@ -103,6 +107,25 @@ public class OpenPanel extends JPanel {
 
     }
 
+    public void setLabelFromStrings(Map<String, Boolean> stringList){
+        Set<Map.Entry<String, Boolean>> entrySet = stringList.entrySet();
+        Map.Entry<String,Boolean>[] entryArray = entrySet.toArray(new Map.Entry[entrySet.size()]);
+        ArrayList<Boolean> booleanArray = new ArrayList<>();
+        ArrayList<String> stringArray = new ArrayList<>();
+        for (int i = 0; i < entrySet.size(); i++){
+            stringArray.add(entryArray[i].getKey());
+            booleanArray.add(entryArray[i].getValue());
+        }
+        list = stringArray;
+    }
+
+    public void setXYstring(ArrayList<String> strArray){
+        for (String string:strArray){
+            xAxis.addItem(string.substring(0,5));
+            yAxis.addItem(string.substring(0,5));
+        }
+    }
+
     public class loadFileListener implements ActionListener {
 
         @Override
@@ -114,6 +137,9 @@ public class OpenPanel extends JPanel {
             if (result == JFileChooser.APPROVE_OPTION) {
                 selectedFile = fileChooser.getSelectedFile();
                 fileNameLabel.setText(selectedFile.getName());
+                FileLoader fl = new FileLoader();
+                setLabelFromStrings(fl.getStringFromFile(selectedFile.getPath()));
+                setXYstring(list);
                 MainWindow.getMainWindow().fillStatusBar("File " + selectedFile + " was loaded");
             }
 

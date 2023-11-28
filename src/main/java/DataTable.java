@@ -17,7 +17,7 @@ public class DataTable {
 
     public DataTable(String path) {
 
-        JSONObject jsonObject = new FileLoader(path).getDataFromJson();
+        JSONObject jsonObject = new FileLoader().getDataFromJson();
         Set<String> arraysKeys = jsonObject.keySet();
         listOfArrays = new ArrayList<String>();
         Iterator<String> it = arraysKeys.iterator();

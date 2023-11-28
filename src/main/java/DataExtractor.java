@@ -23,7 +23,7 @@ public class DataExtractor {
 
     public DataExtractor(String path) {
 
-            JSONObject jsonObject = new FileLoader(path).getDataFromJson();
+            JSONObject jsonObject = new FileLoader().getDataFromJson();
             Set<String> arrays = jsonObject.keySet();
 
 

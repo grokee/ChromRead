@@ -54,11 +54,11 @@ public class OpenPanel extends JPanel {
         JButton dataOriginBtn = new JButton("Data origin");
         fileNameLabel = new JLabel();
         fileNameLabel.setVisible(true);
-        JLabel xLabel = new JLabel("Choose array for x-axis");
+        JLabel xLabel = new JLabel("Choose array for y-axis");
         xAxis = new JComboBox();
         xAxis.setSize(100, 10);
         JLabel xData = new JLabel("fflfkjflfjfljflkfjflkfjlkfj");
-        JLabel yLabel = new JLabel("Choose array for y-axis");
+        JLabel yLabel = new JLabel("Choose array for x-axis");
         yAxis = new JComboBox();
         yAxis.setSize(100, 10);
         JLabel yData = new JLabel("flkjflkjflfkjflkfjlkf");
@@ -103,6 +103,7 @@ public class OpenPanel extends JPanel {
         this.add(centralOpen, BorderLayout.NORTH);
         dataOriginBtn.addActionListener(new loadFileListener());
         createBtn.addActionListener(new CreateChromListener());
+        xAxis.addActionListener(new XComboListener());
 
 
     }
@@ -119,10 +120,26 @@ public class OpenPanel extends JPanel {
         list = stringArray;
     }
 
+    public void setXYArrays(Map<String, Double[]> stringList){
+        Set<Map.Entry<String, Double[]>> entrySet = stringList.entrySet();
+        Map.Entry<String,Double[]>[] entryArray = entrySet.toArray(new Map.Entry[entrySet.size()]);
+        ArrayList<Double[]> xyArray = new ArrayList<>();
+        ArrayList<String> stringArray = new ArrayList<>();
+        for (int i = 0; i < entrySet.size(); i++){
+            stringArray.add(entryArray[i].getKey());
+            xyArray.add(entryArray[i].getValue());
+        }
+        list = stringArray;
+        this.setXYstring(stringArray);
+    }
+
+
     public void setXYstring(ArrayList<String> strArray){
+        xAxis.removeAllItems();
+        yAxis.removeAllItems();
         for (String string:strArray){
-            xAxis.addItem(string.substring(0,5));
-            yAxis.addItem(string.substring(0,5));
+            xAxis.addItem(string.substring(0,40));
+            yAxis.addItem(string.substring(0,40));
         }
     }
 
@@ -138,14 +155,25 @@ public class OpenPanel extends JPanel {
                 selectedFile = fileChooser.getSelectedFile();
                 fileNameLabel.setText(selectedFile.getName());
                 FileLoader fl = new FileLoader();
-                setLabelFromStrings(fl.getStringFromFile(selectedFile.getPath()));
-                setXYstring(list);
+                fl.convertFileToDictionary(selectedFile.getPath());
+//                setLabelFromStrings(fl.getStringFromFile(selectedFile.getPath()));
+//                setXYstring(list);
                 MainWindow.getMainWindow().fillStatusBar("File " + selectedFile + " was loaded");
             }
 
         }
     }
 
+
+    public class XComboListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+           
+        }
+
+
+    }
 
     public class CreateChromListener implements ActionListener {
 

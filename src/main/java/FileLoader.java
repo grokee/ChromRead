@@ -46,6 +46,31 @@ public class FileLoader {
 //        }
 //    }
 
+    public void convertFileToDictionary(String path){
+        String stringFromFile = "";
+        String fileExtenction = "";
+        byte[] byteFromFile = "".getBytes();
+        try {
+            byteFromFile = Files.readAllBytes(Paths.get(path));
+            fileExtenction = getExtenction(path);
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Please check the file name");
+        } finally {
+            if (byteFromFile != null) {
+                try {
+                    stringFromFile = new String(byteFromFile);
+                } catch (Exception e) {
+                    System.out.println("File cannot be read as text");
+                }
+            }
+        }
+//        fileExtenction = getExtenction(path);
+        fileExtenction = "json";
+        ArrayCooker arrayCooker = new ArrayCooker(stringFromFile,fileExtenction);
+
+    }
+
     public Map<String,Boolean> getStringFromFile(String path) {
         Map<String,Boolean> checkedString = new TreeMap<>();
         String stringFromFile = "";

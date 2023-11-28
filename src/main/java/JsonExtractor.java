@@ -1,19 +1,8 @@
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class JsonExtractor {
-
-    public ArrayList<String> getStringArrayList() {
-        return stringArrayList;
-    }
-
-    public void setStringArrayList(ArrayList<String> stringArrayList) {
-        this.stringArrayList = stringArrayList;
-    }
 
     private ArrayList<String> stringArrayList;
 
@@ -98,10 +87,8 @@ public class JsonExtractor {
                     outputStringList.add(String.join(",", divideArray));
                     outputStringList.add(String.join(",", multiplyArray));
                 }
-//                inputStringList.remove(string);
             }
         }
-        System.out.println(outputStringList);
         return outputStringList;
     }
 
@@ -201,37 +188,6 @@ public class JsonExtractor {
             doubleArray[0] = 0;
         }
         return doubleArray;
-    }
-
-
-    public static void main(String[] args) throws IOException {
-        String path = "D:\\Java\\ChromRead\\normal_phase.txt";
-//        FileReader file = new FileReader(path);
-        String data = new String(Files.readAllBytes(Paths.get(path)));
-//        System.out.println(data);
-        JsonExtractor je = new JsonExtractor();
-//            je.setStringArrayList(je.getStringList(data));
-
-//            je.symbolIndexing(data);
-//
-//            System.out.println(je.leftSq.toString());
-//            System.out.println(je.rightSq.toString());
-//            Map<Integer, Integer> listOfList = je.getListIndexes(je.leftSq, je.rightSq);
-//            Map<Integer, Integer> listOfObject = je.getListIndexes(je.leftCur, je.rightCur);
-//            System.out.println(listOfList.toString());
-//            System.out.println(listOfObject.toString());
-//            Iterator<Map.Entry<Integer, Integer>> it = listOfList.entrySet().iterator();
-//            Map<String, double[]> listArray = new TreeMap<>();
-//            while (it.hasNext()) {
-//                Map.Entry<Integer, Integer> entry = it.next();
-////            listString.add(data.substring(entry.getValue()+1, entry.getKey()));
-//                String subString = data.substring(entry.getValue() + 1, entry.getKey());
-//                if (!subString.isEmpty()) {
-//                    listArray.put(je.getNameForList(data, entry.getValue()), je.getArrayFromString(subString));
-//                }
-//            }
-
-
     }
 
 

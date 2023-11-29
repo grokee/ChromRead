@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 
 public class DataTable {
 
-    public double[] time;
-    public double[] values;
+    public double[] xArray;
+    public double[] yArray;
     ArrayList<String> listOfArrays;
 
     public DataTable(String path) {
@@ -83,8 +83,8 @@ public class DataTable {
         //
         //        int size = newValueArray.size();
         int size = y.size();
-        this.values = new double[size];
-        this.time = new double[size];
+        this.yArray = new double[size];
+        this.xArray = new double[size];
 
         //        for (int i=0; i< size; i++){
         ////            System.out.println(newValueArray.get(i));
@@ -97,8 +97,8 @@ public class DataTable {
 
         for (int i = 0; i < size; i++) {
             if (y.get(i).toString().matches("[a-zA-z]+") == false) {
-                this.values[i] = (double) y.get(i);
-                this.time[i] = (double) i / dataRate;
+                this.yArray[i] = (double) y.get(i);
+                this.xArray[i] = (double) i / dataRate;
             }
         }
         //

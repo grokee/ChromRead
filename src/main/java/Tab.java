@@ -7,6 +7,16 @@ import java.awt.event.*;
 
 public class Tab {
 
+//    private double[] xArray;
+//    public void setXArray(double[] inputXArray){
+//        xArray = inputXArray;
+//    }
+//
+//    private double[] yArray;
+//    public void setYArray(double[] inputYArray){
+//        yArray = inputYArray;
+//    }
+
     public JPanel getTabHead(String tabName) {
 
         JButton closeBtn = new JButton("x");
@@ -33,15 +43,15 @@ public class Tab {
         return tabCap;
     }
 
-    public JPanel getTabBody(String path) {
+    public JPanel getTabBody(String path, double[] xArray, double[] yArray) {
         JPanel tabPanel = new JPanel();
         tabPanel.setMinimumSize(new Dimension(700, 350));
         tabPanel.setSize(1200, 600);
 //            ToolsPanel toolsPanel = new ToolsPanel(path);
         NormalizationPanel normPanel = new NormalizationPanel();
-        DataTable normalPhase = new DataTable(path);
+//        DataTable normalPhase = new DataTable(path);
         DataPlotter plot = new DataPlotter();
-        XYChart graph = plot.createPlot(normalPhase.time, normalPhase.values);
+        XYChart graph = plot.createPlot(xArray, yArray);
         XChartPanel<XYChart> tabBody = new XChartPanel<XYChart>(graph);
         tabPanel.setLayout(new BorderLayout());
         tabPanel.add(BorderLayout.CENTER, tabBody);

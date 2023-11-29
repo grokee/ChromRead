@@ -1,8 +1,12 @@
+import org.apache.commons.lang3.ArrayUtils;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.util.*;
 
@@ -39,6 +43,12 @@ public class OpenPanel extends JPanel {
     private File selectedFile;
 
     private Map<Color,String> checkedString;
+
+    private double[] xArray;
+    private double[] yArray;
+
+    private Map.Entry<String,Double[]>[] entryArray;
+
 
     public OpenPanel() {
 
@@ -82,8 +92,8 @@ public class OpenPanel extends JPanel {
                                 .addComponent(createBtn))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(fileNameLabel)
-                                .addComponent(xAxis)
-                                .addComponent(yAxis))
+                                .addComponent(yAxis)
+                                .addComponent(xAxis))
         );
         layout.setVerticalGroup(
                 layout.createSequentialGroup()
@@ -92,10 +102,10 @@ public class OpenPanel extends JPanel {
                                 .addComponent(fileNameLabel))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(xLabel)
-                                .addComponent(xAxis))
+                                .addComponent(yAxis))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(yLabel)
-                                .addComponent(yAxis))
+                                .addComponent(xAxis))
                         .addComponent(normalizationChoose)
                         .addComponent(createBtn)
         );
@@ -103,7 +113,8 @@ public class OpenPanel extends JPanel {
         this.add(centralOpen, BorderLayout.NORTH);
         dataOriginBtn.addActionListener(new loadFileListener());
         createBtn.addActionListener(new CreateChromListener());
-        xAxis.addActionListener(new XComboListener());
+        xAxis.addItemListener(new XComboListener());
+        yAxis.addItemListener(new YComboListener());
 
 
     }
@@ -122,7 +133,7 @@ public class OpenPanel extends JPanel {
 
     public void setXYArrays(Map<String, Double[]> stringList){
         Set<Map.Entry<String, Double[]>> entrySet = stringList.entrySet();
-        Map.Entry<String,Double[]>[] entryArray = entrySet.toArray(new Map.Entry[entrySet.size()]);
+        entryArray = entrySet.toArray(new Map.Entry[entrySet.size()]);
         ArrayList<Double[]> xyArray = new ArrayList<>();
         ArrayList<String> stringArray = new ArrayList<>();
         for (int i = 0; i < entrySet.size(); i++){
@@ -140,6 +151,8 @@ public class OpenPanel extends JPanel {
         for (String string:strArray){
             xAxis.addItem(string.substring(0,40));
             yAxis.addItem(string.substring(0,40));
+//            xAxis.addItem(string);
+//            yAxis.addItem(string);
         }
     }
 
@@ -165,13 +178,38 @@ public class OpenPanel extends JPanel {
     }
 
 
-    public class XComboListener implements ActionListener{
+    public class XComboListener implements ItemListener {
 
         @Override
-        public void actionPerformed(ActionEvent e) {
-           
+        public void itemStateChanged(ItemEvent itemEvent) {
+            if (itemEvent.getStateChange() == ItemEvent.SELECTED){
+                for (int i = 0; i < entryArray.length; i++){
+                    String subString = entryArray[i].getKey().substring(0,30);
+                    if (itemEvent.getItem().toString().contains(subString)){
+                        xArray = ArrayUtils.toPrimitive(entryArray[i].getValue());
+                    }
+                }
+            }
+
         }
 
+
+    }
+
+    public class YComboListener implements ItemListener {
+
+        @Override
+        public void itemStateChanged(ItemEvent itemEvent) {
+            if (itemEvent.getStateChange() == ItemEvent.SELECTED){
+                for (int i = 0; i < entryArray.length; i++){
+                    String subString = entryArray[i].getKey().substring(0,30);
+                    if (itemEvent.getItem().toString().contains(subString)){
+                        yArray = ArrayUtils.toPrimitive(entryArray[i].getValue());
+                    }
+                }
+            }
+
+        }
 
     }
 
@@ -179,7 +217,8 @@ public class OpenPanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            MainWindow.getMainWindow().getCenterPanel().addNewTab(selectedFile);
+
+            MainWindow.getMainWindow().getCenterPanel().addNewTab(selectedFile, xArray, yArray);
         }
 
     }

@@ -50,7 +50,7 @@ public class CentralPanel extends JPanel{
     }
 
 
-    public void addNewTab(File filePath){
+    public void addNewTab(File filePath, double[] xArray, double[] yArray){
         String tabName = filePath.getName();
         String actualTabName = getActualTabName(tabName);
 
@@ -58,13 +58,14 @@ public class CentralPanel extends JPanel{
 
         Tab newTab = new Tab();
 
-        tabPane.addTab(actualTabName, newTab.getTabBody(path));
+        tabPane.addTab(actualTabName, newTab.getTabBody(path, xArray, yArray));
         int index = tabPane.indexOfTab(actualTabName);
         tabPane.setTabComponentAt(index, newTab.getTabHead(actualTabName));
         tabPane.setSelectedIndex(index);
 
 
     }
+
 
     public void removeTab(int index, String tabName){
         nameOpenedTabs.remove(tabName);

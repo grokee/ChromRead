@@ -1,21 +1,18 @@
 /* take a data and extenction
-* determine extractor
-* take list of string from extractor
-* split string into peaces and produce array
-* create dictionary with string as key and array as value
+ * determine extractor
+ * take list of string from extractor
+ * split string into peaces and produce array
+ * create dictionary with string as key and array as value
 
  */
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class ArrayCooker {
 
-    public ArrayCooker(String dataFromFile, String extenction){
+    public ArrayCooker(String dataFromFile, String extenction) {
         ArrayList<String> stringArrayList = new ArrayList<>();
-        switch(extenction){
+        switch (extenction) {
             case "json":
                 JsonExtractor jsonExtractor = new JsonExtractor();
                 stringArrayList = jsonExtractor.getListOfString(dataFromFile);
@@ -30,20 +27,18 @@ public class ArrayCooker {
                 TxtExtractor generalExtractor = new TxtExtractor();
                 break;
         }
-        if (!stringArrayList.isEmpty()){
-            MainWindow.getMainWindow().getCenterPanel().getOpenTab().setXYArrays(this.getMapOfArray(stringArrayList));
+        if (!stringArrayList.isEmpty()) {
+            MainWindow.getMainWindow().getCenterPanel().getOpenTab().setEntryArray(this.getEntryArray(this.getMapOfArray(stringArrayList)));
         } else {
             System.out.println("List of strings is empty");
         }
+    }
 
+    public ArrayCooker(ArrayList<String> stringsList) {
 
     }
 
-    public ArrayCooker(ArrayList<String> stringsList){
-
-    }
-
-    public Map<String, Double[]> getMapOfArray(ArrayList<String> inputListOfString){
+    public Map<String, Double[]> getMapOfArray(ArrayList<String> inputListOfString) {
         Map<String, Double[]> outputMapOfArray = new TreeMap<>();
         Comparator<String> lengthComparator = (a, b) -> Integer.compare(a.length(), b.length());
         inputListOfString.sort(lengthComparator.reversed());
@@ -85,14 +80,21 @@ public class ArrayCooker {
             }
 
         }
-        System.out.println(outputMapOfArray);
         return outputMapOfArray;
     }
 
-    public String getPaddedString(String string){
+    public Map.Entry<String, Double[]>[] getEntryArray(Map<String, Double[]> stringList) {
+        Set<Map.Entry<String, Double[]>> entrySet = stringList.entrySet();
+        Map.Entry<String, Double[]>[] entryArray = entrySet.toArray(new Map.Entry[entrySet.size()]);
+        MainWindow.getMainWindow().getCenterPanel().getOpenTab().setEntryArray(entryArray);
+        return entryArray;
+    }
+
+
+    public String getPaddedString(String string) {
         String newString = string;
-        if (string.length() < 40){
-            newString = String.format("%-40s", string)+"*";
+        if (string.length() < 40) {
+            newString = String.format("%-40s", string) + "*";
         }
         return newString;
     }

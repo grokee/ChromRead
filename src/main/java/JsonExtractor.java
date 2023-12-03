@@ -1,4 +1,7 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -6,17 +9,17 @@ public class JsonExtractor {
 
     private ArrayList<String> stringArrayList;
 
-    private ArrayList<Integer> quot = new ArrayList<>();
+    private final ArrayList<Integer> quot = new ArrayList<>();
 
-    private ArrayList<Integer> colon = new ArrayList<>();
+    private final ArrayList<Integer> colon = new ArrayList<>();
 
-    private ArrayList<Integer> leftSq = new ArrayList<>();
+    private final ArrayList<Integer> leftSq = new ArrayList<>();
 
-    private ArrayList<Integer> rightSq = new ArrayList<>();
+    private final ArrayList<Integer> rightSq = new ArrayList<>();
 
-    private ArrayList<Integer> leftCur = new ArrayList<>();
+    private final ArrayList<Integer> leftCur = new ArrayList<>();
 
-    private ArrayList<Integer> rightCur = new ArrayList<>();
+    private final ArrayList<Integer> rightCur = new ArrayList<>();
 
     public void symbolIndexing(String data) {
         for (int i = 0; i < data.length(); i++) {

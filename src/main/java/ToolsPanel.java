@@ -22,7 +22,6 @@ public class ToolsPanel extends JPanel {
 
     private PeakPanel peakPanel;
 
-
     public ToolsPanel(String path) {
         JButton openBtn = new ButtonWithIcon().getButtonWithIcon("icons//open.png", 20, 20);
         JButton saveBtn = new ButtonWithIcon().getButtonWithIcon("icons//save.png", 20, 20);

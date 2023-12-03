@@ -1,29 +1,15 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 
-public class CentralPanel extends JPanel{
+public class CentralPanel extends JPanel {
 
-    private JTabbedPane tabPane;
-
-    public JTabbedPane getTabPane(){
-        return tabPane;
-    }
-
-    private ArrayList<String> nameOpenedTabs = new ArrayList<String>();
-
+    private final JTabbedPane tabPane;
+    private final ArrayList<String> nameOpenedTabs = new ArrayList<String>();
+    private final OpenPanel openTab;
     private int activeTabIndex;
-
     private NormalizationPanel normPanel;
-
-    public OpenPanel getOpenTab() {
-        return openTab;
-    }
-
-    private OpenPanel openTab;
-
 
     public CentralPanel() {
         this.setBackground(Color.WHITE);
@@ -32,16 +18,24 @@ public class CentralPanel extends JPanel{
         tabPane.setFocusable(false);
 
         openTab = new OpenPanel();
-        tabPane.addTab("o",openTab);
+        tabPane.addTab("o", openTab);
 
 
         this.add(BorderLayout.CENTER, tabPane);
 
     }
 
-    public String getActualTabName(String tab){
+    public JTabbedPane getTabPane() {
+        return tabPane;
+    }
+
+    public OpenPanel getOpenTab() {
+        return openTab;
+    }
+
+    public String getActualTabName(String tab) {
         if (nameOpenedTabs.contains(tab)) {
-             tab = tab+"*";
+            tab = tab + "*";
             return getActualTabName(tab);
         } else {
             nameOpenedTabs.add(tab);
@@ -50,7 +44,7 @@ public class CentralPanel extends JPanel{
     }
 
 
-    public void addNewTab(File filePath, double[] xArray, double[] yArray){
+    public void addNewTab(File filePath, double[] xArray, double[] yArray) {
         String tabName = filePath.getName();
         String actualTabName = getActualTabName(tabName);
 
@@ -67,7 +61,7 @@ public class CentralPanel extends JPanel{
     }
 
 
-    public void removeTab(int index, String tabName){
+    public void removeTab(int index, String tabName) {
         nameOpenedTabs.remove(tabName);
         tabPane.removeTabAt(index);
 

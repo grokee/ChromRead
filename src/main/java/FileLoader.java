@@ -6,22 +6,16 @@
  *  */
 
 
-import java.awt.*;
-import java.io.File;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.FileStore;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 public class FileLoader {
 
@@ -35,7 +29,6 @@ public class FileLoader {
     private String expName;
 
 
-
 //    public FileLoader(String path) {
 //        try {
 //            FileReader file = new FileReader(path);
@@ -46,7 +39,7 @@ public class FileLoader {
 //        }
 //    }
 
-    public void convertFileToDictionary(String path){
+    public void convertFileToDictionary(String path) {
         String stringFromFile = "";
         String fileExtenction = "";
         byte[] byteFromFile = "".getBytes();
@@ -67,12 +60,12 @@ public class FileLoader {
         }
 //        fileExtenction = getExtenction(path);
         fileExtenction = "json";
-        ArrayCooker arrayCooker = new ArrayCooker(stringFromFile,fileExtenction);
+        ArrayCooker arrayCooker = new ArrayCooker(stringFromFile, fileExtenction);
 
     }
 
-    public Map<String,Boolean> getStringFromFile(String path) {
-        Map<String,Boolean> checkedString = new TreeMap<>();
+    public Map<String, Boolean> getStringFromFile(String path) {
+        Map<String, Boolean> checkedString = new TreeMap<>();
         String stringFromFile = "";
         String fileExtenction = "";
         byte[] byteFromFile = "".getBytes();
@@ -92,8 +85,8 @@ public class FileLoader {
             }
         }
 //        if (fileExtenction == "json"){
-            JsonExtractor jsonExtractor = new JsonExtractor();
-            checkedString = jsonExtractor.getMapOfString(jsonExtractor.getExtendedList(jsonExtractor.getListOfString(stringFromFile)));
+        JsonExtractor jsonExtractor = new JsonExtractor();
+        checkedString = jsonExtractor.getMapOfString(jsonExtractor.getExtendedList(jsonExtractor.getListOfString(stringFromFile)));
 //        }
 //         else if (fileExtenction == "txt"){
 //            System.out.println("I cannot read txt-file yet");
@@ -105,17 +98,15 @@ public class FileLoader {
     }
 
 
-    public String getExtenction(String path){
+    public String getExtenction(String path) {
         String extenction = "";
         Pattern pattern = Pattern.compile(".*\\.([a-zA-Z]+)");
         Matcher matcher = pattern.matcher(path);
-        if (matcher.find()){
+        if (matcher.find()) {
             extenction = matcher.group(1);
         }
         return extenction;
     }
-
-
 
 
 //    public void setExpName(String s) {

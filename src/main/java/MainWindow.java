@@ -3,21 +3,10 @@ import java.awt.*;
 
 public class MainWindow {
 
-    private static MainWindow mainWindow = new MainWindow();
-
-    public static MainWindow getMainWindow() {
-        return mainWindow;
-    }
-
+    private static final MainWindow mainWindow = new MainWindow();
     public ToolsPanel toolsPanel;
-
-    public CentralPanel getCenterPanel() {
-        return centerPanel;
-    }
-
-    private CentralPanel centerPanel;
-
     public JLabel statusBar;
+    private final CentralPanel centerPanel;
 
     private MainWindow() {
         JFrame frame = new JFrame();
@@ -34,6 +23,14 @@ public class MainWindow {
         frame.getContentPane().add(BorderLayout.SOUTH, statusBar);
         frame.setSize(1200, 600);
         frame.setVisible(true);
+    }
+
+    public static MainWindow getMainWindow() {
+        return mainWindow;
+    }
+
+    public CentralPanel getCenterPanel() {
+        return centerPanel;
     }
 
     public void fillStatusBar(String text) {

@@ -3,19 +3,10 @@ import org.knowm.xchart.XYChart;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Tab {
-
-//    private double[] xArray;
-//    public void setXArray(double[] inputXArray){
-//        xArray = inputXArray;
-//    }
-//
-//    private double[] yArray;
-//    public void setYArray(double[] inputYArray){
-//        yArray = inputYArray;
-//    }
 
     public JPanel getTabHead(String tabName) {
 
@@ -39,7 +30,6 @@ public class Tab {
         tabCap.add(closeBtn, gbc);
         closeBtn.addActionListener(new CloseBtnHandler(tabName));
 
-
         return tabCap;
     }
 
@@ -47,20 +37,20 @@ public class Tab {
         JPanel tabPanel = new JPanel();
         tabPanel.setMinimumSize(new Dimension(700, 350));
         tabPanel.setSize(1200, 600);
-//            ToolsPanel toolsPanel = new ToolsPanel(path);
+//        ToolsPanel toolsPanel = new ToolsPanel(path);
         NormalizationPanel normPanel = new NormalizationPanel();
 //        DataTable normalPhase = new DataTable(path);
         DataPlotter plot = new DataPlotter();
-        XYChart graph = plot.createPlot(xArray, yArray);
+        XYChart graph = plot.simplePlot(xArray, yArray);
         XChartPanel<XYChart> tabBody = new XChartPanel<XYChart>(graph);
         tabPanel.setLayout(new BorderLayout());
         tabPanel.add(BorderLayout.CENTER, tabBody);
-//        tabPanel.add(BorderLayout.WEST,normPanel);
+        tabPanel.add(BorderLayout.WEST, normPanel);
         return tabPanel;
     }
 
     public class CloseBtnHandler implements ActionListener {
-        private String tabName;
+        private final String tabName;
 
         public CloseBtnHandler(String tabName) {
             this.tabName = tabName;
@@ -73,8 +63,6 @@ public class Tab {
         public void actionPerformed(ActionEvent evt) {
             int index = MainWindow.getMainWindow().getCenterPanel().getTabPane().indexOfTab(getTabName());
             if (index >= 0) {
-//                openedTabs.remove(getTabName());
-//                tabPane.removeTabAt(index);
                 MainWindow.getMainWindow().getCenterPanel().removeTab(index, getTabName());
             }
         }

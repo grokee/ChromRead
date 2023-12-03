@@ -88,21 +88,33 @@ public class OpenPanel extends JPanel {
     public void setEntryArray(Map.Entry<String, Double[]>[] inputEntry) {
         entryArray = inputEntry;
         if (entryArray != null) {
-            setXYLabels();
+            setYLabels();
         }
     }
 
-    public void setXYLabels() {
+    public void setYLabels() {
         ArrayList<String> stringArray = new ArrayList<>();
         for (int i = 0; i < entryArray.length; i++) {
             stringArray.add(entryArray[i].getKey());
         }
-        xAxis.removeAllItems();
         yAxis.removeAllItems();
         for (String string : stringArray) {
-            xAxis.addItem(string.substring(0, 40));
             yAxis.addItem(string.substring(0, 40));
         }
+    }
+
+    public void setXLabels(int yArrayLength, String skipString) {
+        ArrayList<String> stringArray = new ArrayList<>();
+        for (int i = 0; i < entryArray.length; i++) {
+            if ((entryArray[i].getValue().length == yArrayLength) && (!entryArray[i].getKey().contains(skipString))) {
+                stringArray.add(entryArray[i].getKey());
+            }
+        }
+        xAxis.removeAllItems();
+        for (String string : stringArray) {
+            xAxis.addItem(string.substring(0, 40));
+        }
+
     }
 
     public class loadFileListener implements ActionListener {
@@ -148,12 +160,18 @@ public class OpenPanel extends JPanel {
         @Override
         public void itemStateChanged(ItemEvent itemEvent) {
             if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
+                int yArrayLength = -1;
+                String skipYLabel = "";
                 for (int i = 0; i < entryArray.length; i++) {
-                    String subString = entryArray[i].getKey().substring(0, 30);
+                    String subString = entryArray[i].getKey().substring(0, 40);
                     if (itemEvent.getItem().toString().contains(subString)) {
                         yArray = ArrayUtils.toPrimitive(entryArray[i].getValue());
+                        yArrayLength = yArray.length;
+                        skipYLabel = subString;
                     }
                 }
+                setXLabels(yArrayLength, skipYLabel);
+
             }
 
         }

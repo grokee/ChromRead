@@ -1,6 +1,4 @@
-package windows;
-
-import windows.MainWindow;
+package gui;
 
 import javax.swing.*;
 import java.awt.*;

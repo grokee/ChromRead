@@ -1,4 +1,4 @@
-/* take a data and extension (new FileLoader->getFile)
+package data;/* take a data and extension (new data.FileLoader->getFile)
  * determine extractor ()
  * take list of string from extractor
  * split string into peaces and produce array
@@ -6,7 +6,7 @@
 
  */
 
-import windows.MainWindow;
+import gui.MainWindow;
 
 import java.util.*;
 

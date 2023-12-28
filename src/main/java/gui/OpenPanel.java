@@ -1,8 +1,7 @@
-package windows;
+package gui;
 
 import data.ArrayCooker;
 import org.apache.commons.lang3.ArrayUtils;
-import windows.MainWindow;
 
 import javax.swing.*;
 import java.awt.*;

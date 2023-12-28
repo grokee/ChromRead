@@ -1,4 +1,4 @@
-package windows;
+package gui;
 
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;

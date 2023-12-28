@@ -1,11 +1,11 @@
-package windows;
+package gui;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MainWindow {
 
-    private static MainWindow mainWindow = new MainWindow();
+    private static final MainWindow mainWindow = new MainWindow();
     public ToolsPanel toolsPanel;
     public JLabel statusBar;
     private final CentralPanel centerPanel;

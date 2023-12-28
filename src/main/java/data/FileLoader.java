@@ -1,4 +1,4 @@
-/*
+package data;/*
  *
  * load file and transform it into string
  * determine the way of array searching
@@ -70,7 +70,7 @@ public class FileLoader {
 //            }
 //        }
 ////        if (fileExtenction == "json"){
-//        JsonExtractor jsonExtractor = new JsonExtractor();
+//        data.JsonExtractor jsonExtractor = new data.JsonExtractor();
 //        checkedString = jsonExtractor.getMapOfString(jsonExtractor.getExtendedList(jsonExtractor.getListOfString(stringFromFile)));
 //        return checkedString;
 //    }

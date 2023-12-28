@@ -1,4 +1,8 @@
+package windows;
+
+import data.ArrayCooker;
 import org.apache.commons.lang3.ArrayUtils;
+import windows.MainWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,54 +34,122 @@ public class OpenPanel extends JPanel {
 
         this.setBackground(Color.LIGHT_GRAY);
         this.setLayout(new BorderLayout());
+//        this.setSize(600,600);
+//        this.setFont(new java.awt.Font("Tahoma",0,12));
 
-        JButton dataOriginBtn = new JButton("Data origin");
+        JPanel dataPanel = new JPanel();
+        JPanel XYPanel = new JPanel();
+        JPanel peaksPanel = new JPanel();
+        JPanel integrationPanel = new JPanel();
+
+//        this.add(dataPanel);
+//        this.add(XYPanel);
+//        this.add(peaksPanel);
+//        this.add(integrationPanel);
+
+        JButton dataOriginBtn = new JButton("Open file");
         fileNameLabel = new JLabel();
         fileNameLabel.setVisible(true);
+//        dataPanel.add(dataOriginBtn);
+//        dataPanel.add(fileNameLabel);
+//        dataPanel.setVisible(true);
+
+        JLabel availableArray = new JLabel("_____________Available arrays___________________");
+
+        JLabel assignAxis = new JLabel("_____________Assign axis___________________");
         JLabel xLabel = new JLabel("Choose array for y-axis");
         xAxis = new JComboBox();
-        xAxis.setSize(100, 10);
+        xAxis.setPreferredSize(new Dimension(50,20));
+
         JLabel yLabel = new JLabel("Choose array for x-axis");
         yAxis = new JComboBox();
-        yAxis.setSize(100, 10);
+        yAxis.setSize(50, 2);
+//        XYPanel.add(xLabel);
+//        XYPanel.add(yLabel);
+//        XYPanel.add(xAxis);
+//        XYPanel.add(yAxis);
+
+        JLabel specifyUnits = new JLabel("Specify units");
+
+        JLabel chooseRegion = new JLabel("Choose Region");
+        JLabel findPeaks = new JLabel("Number of peaks");
+        JLabel integration = new JLabel("Integration method");
         Checkbox normalizationChoose = new Checkbox("Normalize x-axis to zero");
         JButton createBtn = new JButton("Create Chromatogram");
 
         JPanel centralOpen = new JPanel();
+//        centralOpen.setLayout(new BoxLayout(centralOpen, BoxLayout.PAGE_AXIS));
+        this.add(BorderLayout.CENTER,centralOpen);
         GroupLayout layout = new GroupLayout(centralOpen);
         centralOpen.setLayout(layout);
+
+//        centralOpen.add(dataPanel);
+//        centralOpen.add(XYPanel);
+//        centralOpen.add(peaksPanel);
+//        centralOpen.add(integrationPanel);
+
+
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
+
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
+//                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED,
+//                                GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(dataOriginBtn)
-                                .addComponent(xLabel)
-                                .addComponent(yLabel)
+                                .addComponent(xLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(yLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(specifyUnits, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(chooseRegion)
+                                .addComponent(findPeaks)
+                                .addComponent(integration)
                                 .addComponent(normalizationChoose)
                                 .addComponent(createBtn))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(fileNameLabel)
+                                .addComponent(availableArray)
+                                .addComponent(assignAxis)
                                 .addComponent(yAxis)
                                 .addComponent(xAxis))
+
+
+//                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                               )
         );
         layout.setVerticalGroup(
                 layout.createSequentialGroup()
+//                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED,
+//                                GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(dataOriginBtn)
                                 .addComponent(fileNameLabel))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(xLabel)
-                                .addComponent(yAxis))
+                                .addComponent(availableArray))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(assignAxis))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(xLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(yAxis, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(yLabel)
-                                .addComponent(xAxis))
+                                .addComponent(xAxis, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(specifyUnits))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(chooseRegion))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(findPeaks))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(integration))
                         .addComponent(normalizationChoose)
                         .addComponent(createBtn)
         );
 
-        this.add(centralOpen, BorderLayout.NORTH);
+        this.add(centralOpen, BorderLayout.WEST);
+
+
         dataOriginBtn.addActionListener(new loadFileListener());
         createBtn.addActionListener(new CreateChromListener());
         xAxis.addItemListener(new XComboListener());
@@ -128,8 +200,13 @@ public class OpenPanel extends JPanel {
             if (result == JFileChooser.APPROVE_OPTION) {
                 selectedFile = fileChooser.getSelectedFile();
                 fileNameLabel.setText(selectedFile.getName());
-                FileLoader fl = new FileLoader();
-                fl.convertFileToDictionary(selectedFile.getPath());
+                ArrayCooker arrayCooker = new ArrayCooker();
+                arrayCooker.loadFile(selectedFile.getPath());
+                arrayCooker.sendArrays();
+
+
+//                data.FileLoader fl = new data.FileLoader();
+//                fl.getDictionaryFromFile(selectedFile.getPath());
                 MainWindow.getMainWindow().fillStatusBar("File " + selectedFile + " was loaded");
             }
 

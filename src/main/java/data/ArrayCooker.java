@@ -1,43 +1,52 @@
-/* take a data and extenction
- * determine extractor
+/* take a data and extension (new FileLoader->getFile)
+ * determine extractor ()
  * take list of string from extractor
  * split string into peaces and produce array
  * create dictionary with string as key and array as value
 
  */
 
+import windows.MainWindow;
+
 import java.util.*;
 
 public class ArrayCooker {
 
-    public ArrayCooker(String dataFromFile, String extenction) {
-        ArrayList<String> stringArrayList = new ArrayList<>();
-        switch (extenction) {
-            case "json":
-                JsonExtractor jsonExtractor = new JsonExtractor();
-                stringArrayList = jsonExtractor.getListOfString(dataFromFile);
-                break;
-            case "txt":
-                TxtExtractor txtExtractor = new TxtExtractor();
-                break;
-            case "csv":
-                CsvExtractor csvExtractor = new CsvExtractor();
-                break;
-            default:
-                TxtExtractor generalExtractor = new TxtExtractor();
-                break;
-        }
-        if (!stringArrayList.isEmpty()) {
-            MainWindow.getMainWindow().getCenterPanel().getOpenTab().setEntryArray(this.getEntryArray(this.getMapOfArray(stringArrayList)));
+    private String fileExtension;
+
+    private String dataFromFile;
+
+    public ArrayCooker() {
+
+    }
+
+    public void loadFile(String path){
+        FileLoader fl = new FileLoader();
+        dataFromFile = fl.getDataFromFile(path);
+        fileExtension = fl.getExtenction(path);
+    }
+
+    // method invokes appropriate method to find Arrays (as String) in Data and creates list of these Arrays
+    public ArrayList<String> getStringArrayList(String data, String extension){
+        ArrayList<String> stringArrayList;
+        ExtractorFactory dataExctractor = new ExtractorFactory();
+        stringArrayList = dataExctractor.getExctractor(extension).getListOfString(data);
+        return stringArrayList;
+    }
+
+    // method sends EntryArray to appropriate windows.Tab of the windows.MainWindow
+    public void sendArrays(){
+        ArrayList<String> arrayToSend = this.getStringArrayList(dataFromFile,fileExtension);
+        if (!arrayToSend.isEmpty()) {
+            MainWindow.getMainWindow().getCenterPanel().getOpenTab().setEntryArray(this.getEntryArray(this.getMapOfArray(arrayToSend)));
         } else {
             System.out.println("List of strings is empty");
+            MainWindow.getMainWindow().fillStatusBar("List of arrays cannot be created from chosen file");
         }
-    }
-
-    public ArrayCooker(ArrayList<String> stringsList) {
 
     }
 
+    // methods checks arrays for homogenity and creates dictionary of Arrays
     public Map<String, Double[]> getMapOfArray(ArrayList<String> inputListOfString) {
         Map<String, Double[]> outputMapOfArray = new TreeMap<>();
         Comparator<String> lengthComparator = (a, b) -> Integer.compare(a.length(), b.length());
@@ -83,14 +92,28 @@ public class ArrayCooker {
         return outputMapOfArray;
     }
 
+
+    public Map<String, Double[]> getFilteredDictionary(Map<String, Double[]> arrayDictionary){
+        Map<String, Double[]> filteredDictionary = new TreeMap<>();
+        for (Map.Entry<String, Double[]> entry:arrayDictionary.entrySet()){
+            if (entry.getValue()!=null){
+                filteredDictionary.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return filteredDictionary;
+    }
+
+
+    // method converts dictionary of Arrays to Set of double arrays
     public Map.Entry<String, Double[]>[] getEntryArray(Map<String, Double[]> stringList) {
-        Set<Map.Entry<String, Double[]>> entrySet = stringList.entrySet();
+        Set<Map.Entry<String, Double[]>> entrySet = this.getFilteredDictionary(stringList).entrySet();
         Map.Entry<String, Double[]>[] entryArray = entrySet.toArray(new Map.Entry[entrySet.size()]);
-        MainWindow.getMainWindow().getCenterPanel().getOpenTab().setEntryArray(entryArray);
         return entryArray;
     }
 
 
+
+    //
     public String getPaddedString(String string) {
         String newString = string;
         if (string.length() < 40) {

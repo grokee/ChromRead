@@ -1,19 +1,31 @@
+package windows;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class MainWindow {
 
-    private static final MainWindow mainWindow = new MainWindow();
+    private static MainWindow mainWindow = new MainWindow();
     public ToolsPanel toolsPanel;
     public JLabel statusBar;
     private final CentralPanel centerPanel;
 
-    private MainWindow() {
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(new Dimension(700, 350));
 
-//        toolsPanel = new ToolsPanel();
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    private JFrame frame;
+
+    private MainWindow() {
+        frame = new JFrame();
+        frame.setTitle("ChromRead");
+        frame.setBackground(Color.LIGHT_GRAY);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setMinimumSize(new Dimension(600, 350));
+        frame.setLocationRelativeTo(null);
+
+//        toolsPanel = new dhgfhdg.ToolsPanel();
         centerPanel = new CentralPanel();
         statusBar = new JLabel("Information");
 
@@ -21,6 +33,7 @@ public class MainWindow {
 //        frame.getContentPane().add(BorderLayout.WEST, toolsPanel);
         frame.getContentPane().add(BorderLayout.CENTER, centerPanel);
         frame.getContentPane().add(BorderLayout.SOUTH, statusBar);
+        frame.getContentPane().setBackground(Color.LIGHT_GRAY);
         frame.setSize(1200, 600);
         frame.setVisible(true);
     }

@@ -1,5 +1,8 @@
+package windows;
+
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
+import windows.MainWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +13,7 @@ public class Tab {
 
     public JPanel getTabHead(String tabName) {
 
+//        windows.MainWindow.getMainWindow().getFrame().setSize(1200,600);
         JButton closeBtn = new JButton("x");
         closeBtn.setOpaque(false);
         closeBtn.setBorderPainted(false);
@@ -36,16 +40,23 @@ public class Tab {
     public JPanel getTabBody(String path, double[] xArray, double[] yArray) {
         JPanel tabPanel = new JPanel();
         tabPanel.setMinimumSize(new Dimension(700, 350));
-        tabPanel.setSize(1200, 600);
-//        ToolsPanel toolsPanel = new ToolsPanel(path);
-        NormalizationPanel normPanel = new NormalizationPanel();
+//        tabPanel.setSize(1200, 600);
+//        dhgfhdg.ToolsPanel toolsPanel = new dhgfhdg.ToolsPanel(path);
+//        windows.NormalizationPanel normPanel = new windows.NormalizationPanel();
 //        DataTable normalPhase = new DataTable(path);
+        String[][] tableData = {{"455","3000","400","500"},
+                                 {"455","3000","400","500"}
+        };
+        String[] header = {"Position","Integral","Left","Right"};
+        JTable table = new JTable(tableData,header);
+//        table.getAutoResizeMode();
         DataPlotter plot = new DataPlotter();
         XYChart graph = plot.simplePlot(xArray, yArray);
         XChartPanel<XYChart> tabBody = new XChartPanel<XYChart>(graph);
         tabPanel.setLayout(new BorderLayout());
-        tabPanel.add(BorderLayout.CENTER, tabBody);
-        tabPanel.add(BorderLayout.WEST, normPanel);
+        tabPanel.add(BorderLayout.CENTER,tabBody);
+        tabPanel.add(BorderLayout.WEST,new JScrollPane(table));
+//        tabPanel.add(BorderLayout.WEST, normPanel);
         return tabPanel;
     }
 
